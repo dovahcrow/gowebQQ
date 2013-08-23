@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
-	"qq/client/cl"
+	"client/cl"
 	"strconv"
 	"strings"
 	"sync"
