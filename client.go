@@ -5,7 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
-	"client/cl"
+	"cl"
 	"strconv"
 	"strings"
 	"sync"
