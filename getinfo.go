@@ -3,8 +3,8 @@ package qqclient
 import (
 	"encoding/json"
 	"fmt"
-	. "tools"
-	"tools/simplejson"
+	. "github.com/doomsplayer/Xgo-webqq/tools"
+	"github.com/doomsplayer/Xgo-webqq/tools/simplejson"
 )
 
 func (qq *Client) GetId(uin string, b ...*BuddyInfo) (str string, err error) {

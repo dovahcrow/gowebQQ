@@ -5,12 +5,12 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
-	"cl"
+	"github.com/doomsplayer/Xgo-webqq/cl"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
-	. "tools"
+	. "github.com/doomsplayer/Xgo-webqq/tools"
 )
 
 type Client struct {
