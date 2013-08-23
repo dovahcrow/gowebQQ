@@ -8,8 +8,8 @@ import (
 	"runtime"
 	"strconv"
 	"time"
-	. "tools"
-	"tools/simplejson"
+	. "github.com/doomsplayer/Xgo-webqq/tools"
+	"github.com/doomsplayer/Xgo-webqq/tools/simplejson"
 )
 
 func init() {

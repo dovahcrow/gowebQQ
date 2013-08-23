@@ -11,8 +11,8 @@ import (
 	//	"os/exec"
 	"regexp"
 	"strings"
-	. "tools"
-	"tools/simplejson"
+	. "github.com/doomsplayer/Xgo-webqq/tools"
+	"github.com/doomsplayer/Xgo-webqq/tools/simplejson"
 )
 
 type LoginRet struct {

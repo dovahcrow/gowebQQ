@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/url"
 	"strconv"
-	. "tools"
-	"tools/simplejson"
+	. "github.com/doomsplayer/Xgo-webqq/tools"
+	"github.com/doomsplayer/Xgo-webqq/tools/simplejson"
 )
 
 func init() {

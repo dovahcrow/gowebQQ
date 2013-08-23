@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"time"
-	. "tools"
+	. "github.com/doomsplayer/Xgo-webqq/tools"
 )
 
 func Client(t time.Duration) http.Client {
