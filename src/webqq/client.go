@@ -2,16 +2,24 @@ package qqclient
 
 import (
 	"fmt"
+	"github.com/doomsplayer/Xgo-webqq/cl"
+	. "github.com/doomsplayer/Xgo-webqq/tools"
 	"math/rand"
 	"net/http"
 	"net/url"
-	"github.com/doomsplayer/Xgo-webqq/cl"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
-	. "github.com/doomsplayer/Xgo-webqq/tools"
 )
+
+func client(t time.Duration) http.Client {
+	jar, err := cookiejar.New(nil)
+	ErrHandle(err, `x`, `obtain_cookiejar`)
+	return http.Client{&http.Transport{Dial: func(network string, address string) (net.Conn, error) {
+		return net.DialTimeout(network, address, t*time.Millisecond)
+	}}, nil, jar}
+}
 
 type Client struct {
 	id          string
@@ -30,7 +38,13 @@ func init() {
 }
 
 func New(id, password string) *Client {
-	return &Client{MessagePool: make(chan *PollMessage, 100), id: id, password: password, clientid: strconv.Itoa(rand.Intn(90000000) + 10000000), client: cl.Client(20000)}
+	return &Client{
+		MessagePool: make(chan *PollMessage, 100),
+		id:          id,
+		password:    password,
+		clientid:    strconv.Itoa(rand.Intn(90000000) + 10000000),
+		client:      client(20000),
+	}
 }
 
 func (qq *Client) Get(url string) (re *http.Response, err error) {
