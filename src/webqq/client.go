@@ -1,49 +1,54 @@
-package qqclient
+package webqq
 
 import (
 	"fmt"
-	"github.com/doomsplayer/Xgo-webqq/cl"
-	. "github.com/doomsplayer/Xgo-webqq/tools"
 	"math/rand"
+	"net"
 	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
+	. "webqq/tools"
 )
 
-func client(t time.Duration) http.Client {
+func newClient(t time.Duration) http.Client {
 	jar, err := cookiejar.New(nil)
 	ErrHandle(err, `x`, `obtain_cookiejar`)
-	return http.Client{&http.Transport{Dial: func(network string, address string) (net.Conn, error) {
-		return net.DialTimeout(network, address, t*time.Millisecond)
-	}}, nil, jar}
+
+	return http.Client{
+		&http.Transport{
+			Dial: func(network string, address string) (net.Conn, error) {
+				return net.DialTimeout(network, address, t*time.Millisecond)
+			},
+		},
+		nil,
+		jar,
+		t * time.Millisecond,
+	}
 }
 
 type Client struct {
-	id          string
-	password    string
-	vfwebqq     string
-	psessionid  string
-	clientid    string
-	ptwebqq     string
-	PollMutex   sync.Mutex
-	MessagePool chan *PollMessage
-	client      http.Client
+	id         string
+	password   string
+	vfwebqq    string
+	psessionid string
+	clientid   string
+	ptwebqq    string
+	client     http.Client
 }
 
 func init() {
 	fmt.Printf(``)
 }
 
-func New(id, password string) *Client {
+func New(id, password string, capacity int, timeout int) *Client {
 	return &Client{
-		MessagePool: make(chan *PollMessage, 100),
-		id:          id,
-		password:    password,
-		clientid:    strconv.Itoa(rand.Intn(90000000) + 10000000),
-		client:      client(20000),
+		id:       id,
+		password: password,
+		clientid: strconv.Itoa(rand.Intn(90000000) + 10000000),
+		client:   newClient(time.Duration(timeout)),
 	}
 }
 
@@ -62,10 +67,10 @@ func (qq *Client) get(u string) (re *http.Response, err error) {
 	ErrHandle(err, `p`)
 
 	req.Header.Add(`referer`, `http://d.web2.qq.com/proxy.html?v=20110331002&callback=2&id=3`)
+
 	re, err = qq.client.Do(req)
-	if err != nil {
-		panic(err)
-	}
+	ErrHandle(err, `p`)
+
 	if qq.ptwebqq == `` {
 		for _, v := range re.Cookies() {
 			if v.Name == `ptwebqq` {
@@ -73,6 +78,7 @@ func (qq *Client) get(u string) (re *http.Response, err error) {
 			}
 		}
 	}
+
 	qq.client.Jar.SetCookies(req.URL, re.Cookies())
 	return
 }
@@ -88,6 +94,7 @@ func (qq *Client) postForm(u string, data url.Values) (re *http.Response, err er
 	ErrHandle(err, `p`)
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
 	if qq.client.Jar != nil {
 		for _, cookie := range qq.client.Jar.Cookies(req.URL) {
 			req.AddCookie(cookie)
@@ -95,6 +102,7 @@ func (qq *Client) postForm(u string, data url.Values) (re *http.Response, err er
 	}
 
 	req.Header.Add(`referer`, `http://d.web2.qq.com/proxy.html?v=20110331002&callback=2&id=3`)
+
 	re, err = qq.client.Do(req)
 	ErrHandle(err, `p`)
 

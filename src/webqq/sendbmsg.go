@@ -1,15 +1,15 @@
-package qqclient
+package webqq
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/url"
 	"strconv"
-	. "github.com/doomsplayer/Xgo-webqq/tools"
-	"github.com/doomsplayer/Xgo-webqq/tools/simplejson"
+	. "webqq/tools"
+	"webqq/tools/simplejson"
 )
 
-func (qq *Client) buddyMsgStructer(uiuin string, msg_id int, msg, fontname, fontsize, fontcolor string, fontstyle []int) url.Values {
+func (qq *Client) buddyMsgStructer(uiuin string, msg_id int64, msg, fontname, fontsize, fontcolor string, fontstyle [3]int) url.Values {
 	uin, _ := strconv.Atoi(uiuin)
 	v := url.Values{}
 	v.Set(`clientid`, qq.clientid)
@@ -38,11 +38,11 @@ func (qq *Client) buddyMsgStructer(uiuin string, msg_id int, msg, fontname, font
 	return v
 }
 
-func (qq *Client) EasyBuddySend(uin string, msg_id int, msg string) (err error) {
-	return qq.Sendbmsg(uin, msg_id, msg, `黑体`, `12`, `000000`, []int{0, 0, 0})
+func (qq *Client) SendBuddyMsgEasy(uin string, msg_id int64, msg string) (err error) {
+	return qq.SendBuddyMsg(uin, msg_id, msg, `宋体`, `15`, `000000`, [3]int{0, 0, 0})
 }
 
-func (qq *Client) Sendbmsg(uin string, msg_id int, msg, fontname, fontsize, fontcolor string, fontstyle []int) (err error) {
+func (qq *Client) SendBuddyMsg(uin string, msg_id int64, msg, fontname, fontsize, fontcolor string, fontstyle [3]int) (err error) {
 	defer func() {
 		if e := recover(); e != nil {
 			err = e.(error)
@@ -58,6 +58,7 @@ func (qq *Client) Sendbmsg(uin string, msg_id int, msg, fontname, fontsize, font
 		panic(err)
 	}
 	if i := ret.Get(`retcode`).MustInt(); i == 0 {
+		fmt.Println(ret)
 		return nil
 	} else {
 		panic(fmt.Errorf("发送个人消息:%v 失败，错误代码：%v", msg, i))

@@ -1,12 +1,12 @@
-package qqclient
+package webqq
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/url"
 	"strconv"
-	. "github.com/doomsplayer/Xgo-webqq/tools"
-	"github.com/doomsplayer/Xgo-webqq/tools/simplejson"
+	. "webqq/tools"
+	"webqq/tools/simplejson"
 )
 
 func init() {
