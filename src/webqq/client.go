@@ -62,7 +62,7 @@ func (qq *Client) get(u string) (re *http.Response, err error) {
 			err = e.(error)
 		}
 	}()
-
+	lg.Trace("\nGET: URL: %v", u)
 	req, err := http.NewRequest("GET", u, nil)
 	ErrHandle(err, `p`)
 
@@ -89,7 +89,7 @@ func (qq *Client) postForm(u string, data url.Values) (re *http.Response, err er
 			err = e.(error)
 		}
 	}()
-
+	lg.Trace("\nPOST: URL: %v\nDATA: %v", u, data.Encode())
 	req, err := http.NewRequest("POST", u, strings.NewReader(data.Encode()))
 	ErrHandle(err, `p`)
 
@@ -112,4 +112,8 @@ func (qq *Client) postForm(u string, data url.Values) (re *http.Response, err er
 
 func (*Client) timeStamp() string {
 	return fmt.Sprintf("%d", time.Now().UnixNano())[:13]
+}
+
+func (this *Client) SetPtWebqq(p string) {
+	this.ptwebqq = p
 }
