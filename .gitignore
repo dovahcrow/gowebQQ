@@ -24,3 +24,6 @@ _testmain.go
 /src/example/*
 !/src/example/*.go	       
 .directory
+example/l
+*.log
+*.log.*.00*
