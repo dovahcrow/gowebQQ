@@ -21,9 +21,7 @@ _testmain.go
 
 *.exe
 *.sublime-*
-/src/example/*
-!/src/example/*.go	       
+/src/test
 .directory
-example/l
 *.log
 *.log.*.00*
