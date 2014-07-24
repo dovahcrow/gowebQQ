@@ -20,7 +20,7 @@ _cgo_export.*
 _testmain.go
 
 *.exe
-*.sublime-*
+*.sublime-workspace
 /src/test
 .directory
 *.log
