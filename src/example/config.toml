@@ -1,17 +1,17 @@
-Username = "123213"
-Password = "123"
-DailTimeout = 2000000
-VfCodeFile = "vfcode.png"
+Username = "123213" # 帐号
+Password = "123" # 密码
+DailTimeout = 2000000 # http超时时间
+VfCodeFile = "vfcode.png" # 如果有验证码的话，验证码保存文件名
 
-VfCodeTrigger = "cat"
+VfCodeTrigger = "recognize vfcode.png" # 收到验证码以后触发的bash命令。这里是验证码识别程序（如果你有的话），会把命令的stdout重定向到程序。如果没有识别程序，你也可以简单的用cat来代，然后人工识别
 
-LogChannelLen = 2000
-KickRelogin  = true
+LogChannelLen = 2000 # 日志模块缓冲大小
+KickRelogin  = true # 如果true，在贝踢下线以会自动登录
 
 [FileLog]
 use = true
 filename = "log.log"
-level = 2
+level = 2 # 日志等级 0-5
 [ConsoleLog]
 use = true
 level = 0
