@@ -2,8 +2,8 @@ package webqq
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/logs"
 	"math/rand"
-	"net"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -13,43 +13,49 @@ import (
 	. "webqq/tools"
 )
 
-func newClient(t time.Duration) http.Client {
-	jar, err := cookiejar.New(nil)
-	ErrHandle(err, `x`, `obtain_cookiejar`)
-
-	return http.Client{
-		&http.Transport{
-			Dial: func(network string, address string) (net.Conn, error) {
-				return net.DialTimeout(network, address, t*time.Millisecond)
-			},
-		},
-		nil,
-		jar,
-		t * time.Millisecond,
-	}
-}
+var lg *logs.BeeLogger
 
 type Client struct {
-	id         string
-	password   string
-	vfwebqq    string
-	psessionid string
-	clientid   string
-	ptwebqq    string
-	client     http.Client
+	id            string
+	password      string
+	vfwebqq       string
+	psessionid    string
+	clientid      string
+	ptwebqq       string
+	verifysession string
+	client        http.Client
+	msgid         int64
+	*logs.BeeLogger
 }
 
 func init() {
 	fmt.Printf(``)
 }
 
-func New(id, password string, capacity int, timeout int) *Client {
-	return &Client{
+func newClient(t time.Duration) http.Client {
+	jar, err := cookiejar.New(nil)
+	ErrHandle(err, `x`, `obtain_cookiejar`)
+
+	return http.Client{
+		nil,
+		nil,
+		jar,
+		t * time.Millisecond,
+	}
+}
+
+func New(id, password string, timeout int, logchannellen int64) *Client {
+	rd := rand.New(rand.NewSource(time.Now().UnixNano()))
+	c := &Client{
 		id:       id,
 		password: password,
-		clientid: strconv.Itoa(rand.Intn(90000000) + 10000000),
+		clientid: strconv.Itoa(rd.Intn(90000000) + 10000000),
 		client:   newClient(time.Duration(timeout)),
+		msgid:    (rd.Int63n(9000) + 1000) * 10000,
 	}
+	c.BeeLogger = logs.NewLogger(logchannellen)
+	lg = c.BeeLogger
+	return c
 }
 
 func (qq *Client) Get(url string) (re *http.Response, err error) {
@@ -75,6 +81,11 @@ func (qq *Client) get(u string) (re *http.Response, err error) {
 		for _, v := range re.Cookies() {
 			if v.Name == `ptwebqq` {
 				qq.ptwebqq = v.Value
+				continue
+			}
+			if v.Name == "verifysession" {
+				qq.verifysession = v.Value
+				continue
 			}
 		}
 	}

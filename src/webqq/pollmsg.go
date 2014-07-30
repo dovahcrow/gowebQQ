@@ -180,7 +180,7 @@ func ParseRawPoll(retu []byte) (ret []*PollMessage, err error) {
 		}
 	default:
 		{
-			err = fmt.Errorf("unknown ret code：%v", retcode)
+			err = fmt.Errorf("unknown ret code:%v", retcode)
 		}
 	}
 	return
@@ -278,7 +278,7 @@ func (this *PollMessage) IsBuddyMessage() (ret *BuddyMessage, is bool) {
 	fontName := fontjs.Get("name").MustString("")
 	content := []string{}
 	for i := 1; i < len(contentjs.MustArray([]interface{}{})); i++ {
-		content = append(content, fmt.Sprint(contentjs.GetIndex(i)))
+		content = append(content, fmt.Sprint(contentjs.GetIndex(i).MustString("不支持文字以外的消息")))
 
 	}
 
@@ -389,7 +389,7 @@ func (this *PollMessage) IsGroupMessage() (*GroupMessage, bool) {
 	fontName := fontjs.Get("name").MustString("")
 	content := []string{}
 	for i := 1; i < len(contentjs.MustArray([]interface{}{})); i++ {
-		content = append(content, fmt.Sprint(contentjs.GetIndex(i)))
+		content = append(content, fmt.Sprint(contentjs.GetIndex(i).MustString("不支持文字以外的消息")))
 
 	}
 

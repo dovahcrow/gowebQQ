@@ -1,0 +1,17 @@
+Username = "123213"
+Password = "123"
+DailTimeout = 2000000
+VfCodeFile = "vfcode.png"
+
+VfCodeTrigger = "cat"
+
+LogChannelLen = 2000
+KickRelogin  = true
+
+[FileLog]
+use = true
+filename = "log.log"
+level = 2
+[ConsoleLog]
+use = true
+level = 0

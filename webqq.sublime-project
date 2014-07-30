@@ -8,9 +8,12 @@
 	],
 	"settings":
 	{
-		"GoSublime": {
-			 "env": { "GOPATH": "$GOPATH:$GS_GOPATH" }
+		"GoSublime":
+		{
+			"env":
+			{
+				"GOPATH": "$GOPATH:$GS_GOPATH"
+			}
 		}
 	}
 }
-
