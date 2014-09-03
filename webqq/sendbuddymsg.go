@@ -47,8 +47,9 @@ func (qq *Client) SendBuddyMsg(uin string, msg_id int64, msg, fontname, fontsize
 		if e := recover(); e != nil {
 			err = e.(error)
 		}
+		qq.msgid++
 	}()
-	v := qq.buddyMsgStructer(uin, msg_id, msg, fontname, fontsize, fontcolor, fontstyle)
+	v := qq.buddyMsgStructer(uin, qq.msgid, msg, fontname, fontsize, fontcolor, fontstyle)
 	re, err := qq.postForm(`http://d.web2.qq.com/channel/send_buddy_msg2`, v)
 	if err != nil {
 		panic(err)
@@ -60,7 +61,7 @@ func (qq *Client) SendBuddyMsg(uin string, msg_id int64, msg, fontname, fontsize
 	if i := ret.Get(`retcode`).MustInt(); i == 0 {
 		return nil
 	} else {
-		panic(fmt.Errorf("发送个人消息:%v 失败，错误代码：%v", msg, i))
+		panic(fmt.Errorf("发送个人消息:%v 失败，错误代码:%v", msg, i))
 	}
 	return
 }

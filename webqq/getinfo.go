@@ -17,7 +17,7 @@ func (qq *Client) GetId(uin string, b ...*BuddyInfo) (str string, err error) {
 		return ``, fmt.Errorf(`too many buddyinfo objects`)
 	}
 	re, err := qq.get(`http://s.web2.qq.com/api/get_friend_uin2?tuin=` +
-		uin + `&verifysession=&type=1&code=&vfwebqq=` +
+		uin + `&verifysession=` + qq.verifysession + `&type=1&code=&vfwebqq=` +
 		qq.vfwebqq +
 		`&t=` + qq.timeStamp())
 
@@ -79,9 +79,42 @@ type cc struct {
 
 func (qq *Client) GetInfo(uin string, b *BuddyInfo) error {
 	re, err := qq.Get(`http://s.web2.qq.com/api/get_friend_info2?tuin=` + uin +
-		`&verifysession=&code=&vfwebqq=` + qq.vfwebqq + `&t=` + qq.timeStamp())
+		`&verifysession=` + qq.verifysession + `&code=&vfwebqq=` + qq.vfwebqq + `&t=` + qq.timeStamp())
 	ErrHandle(err, `n`)
 	byt := ReadByte(re.Body)
 	err = json.Unmarshal(byt, &cc{0, b})
 	return err
 }
+
+// {
+// 	"retcode":0,
+// 	"result":{
+// 		"face":600,
+// 		"birthday":{
+// 			"month":1,
+// 			"year":1994,
+// 			"day":23
+// 			},
+// 			"occupation":"",
+// 			"phone":"-",
+// 			"allow":4,
+// 			"college":"-",
+// 			"constel":1,
+// 			"blood":5,
+// 			"stat":20,
+// 			"homepage":"42.cnssuestc.org",
+// 			"country":"埃及",
+// 			"city":"阿斯旺",
+// 			"uiuin":"doomsplayer@gmail.com",
+// 			"personal":"",
+// 			"nick":"42",
+// 			"shengxiao":10,
+// 			"email":"",
+// 			"token":"262611e48b462f551b0415a18b66f407b2fd1a1d59f216d6",
+// 			"province":"",
+// 			"account":173165159,
+// 			"gender":"male",
+// 			"tuin":458076853,
+// 			"mobile":""
+// 			}
+// 		}

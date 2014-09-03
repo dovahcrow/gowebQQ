@@ -48,8 +48,10 @@ func (qq *Client) SendGroupMsg(uin string, msg_id int64, msg, fontname, fontsize
 		if e := recover(); e != nil {
 			err = e.(error)
 		}
+		qq.msgid++
 	}()
-	v := qq.groupMsgStructer(uin, msg_id, msg, fontname, fontsize, fontcolor, fontstyle)
+	fmt.Println(qq.msgid)
+	v := qq.groupMsgStructer(uin, qq.msgid, msg, fontname, fontsize, fontcolor, fontstyle)
 	re, err := qq.postForm(`http://d.web2.qq.com/channel/send_qun_msg2`, v)
 
 	if err != nil {
@@ -62,7 +64,7 @@ func (qq *Client) SendGroupMsg(uin string, msg_id int64, msg, fontname, fontsize
 	if i := ret.Get(`retcode`).MustInt(); i == 0 {
 		return nil
 	} else {
-		panic(fmt.Errorf("发送群消息:%v 失败，错误代码：%v", msg, i))
+		panic(fmt.Errorf("发送群消息:%v 失败，错误代码:%v", msg, i))
 	}
 	return
 }

@@ -161,7 +161,7 @@ func (qq *Client) LoginStep2(ret LoginRet) (err error) {
 	}
 
 	if i := js.Get(`retcode`).MustFloat64(); i != float64(0) {
-		panic(fmt.Errorf("第二次握手失败,错误码：%v", i))
+		panic(fmt.Errorf("第二次握手失败,错误码:%v", i))
 	}
 
 	qq.vfwebqq = js.Get(`result`).Get(`vfwebqq`).MustString()
