@@ -1,10 +1,8 @@
-gowebqq
+gowebqq (deprecated)
 =========
 
-webqq API for Golang
+**There's no longer any interest from the author in QQ protocol.**
 
-把webqq的协议简单的包装了一下.
+webqq API for Golang 
 
-第二版重构中
-
-欢迎讨论doomsplayer@gmail.com
+Simple wrapper of webqq protocol.
